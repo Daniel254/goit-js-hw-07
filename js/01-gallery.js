@@ -35,6 +35,8 @@ const previewClickHandler = (e) => {
   openModal(e.target.dataset.source);
 };
 const escKeydownHandler = (e) => {
+  console.log("esc");
+  console.log(modalObj.element());
   if (e.code === "Escape" && e.target.classList.contains("gallery__link")) {
     modalObj.close();
   }
