@@ -22,9 +22,17 @@ const renderGalleryMarkup = () => {
     .join("");
 };
 const openModal = (imgSrc) => {
-  modalObj = basicLightbox.create(`
-    <img src="${imgSrc}" width="800" height="600">
-`);
+  modalObj = basicLightbox.create(
+    `<img src="${imgSrc}" width="800" height="600">`,
+    {
+      onShow: () => {
+        galleryContainerEl.addEventListener("keydown", escKeydownHandler);
+      },
+      onClose: () => {
+        galleryContainerEl.removeEventListener("keydown", escKeydownHandler);
+      },
+    }
+  );
   modalObj.show();
 };
 const previewClickHandler = (e) => {
@@ -35,13 +43,10 @@ const previewClickHandler = (e) => {
   openModal(e.target.dataset.source);
 };
 const escKeydownHandler = (e) => {
-  console.log("esc");
-  console.log(modalObj.element());
-  if (e.code === "Escape" && e.target.classList.contains("gallery__link")) {
+  if (e.code === "Escape" && modalObj.visible()) {
     modalObj.close();
   }
 };
 
 renderGalleryMarkup();
 galleryContainerEl.addEventListener("click", previewClickHandler);
-galleryContainerEl.addEventListener("keydown", escKeydownHandler);
